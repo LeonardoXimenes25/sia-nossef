@@ -54,8 +54,12 @@ class SubjectResource extends Resource
                 TextColumn::make('id')->label('Nu'),
                 TextColumn::make('code')->label('Kodigu'),
                 TextColumn::make('name')->label('Naran'),
-                TextColumn::make('major_id')->label('Area Estudu'),
-                TextColumn::make('teacher_id')->label('Professor'),
+                TextColumn::make('major_id')
+                    ->label('Area Estudu')
+                    ->getStateUsing(fn($record) => $record->major?->name),
+                TextColumn::make('teacher_id')
+                    ->label('Professor')
+                    ->getStateUsing(fn($record) => $record->teacher?->name),
                 
                 
             ])

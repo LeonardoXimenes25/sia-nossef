@@ -24,17 +24,24 @@ class GradeResource extends Resource
                     ->label('Murid')
                     ->relationship('student', 'name')
                     ->required(),
+                
+                    Forms\Components\Select::make('subject_assignment_id')
+    ->label('Guru / Mata Pelajaran / Kelas / Jurusan')
+    ->options(function () {
+        return \App\Models\SubjectAssignment::with(['teacher', 'subject', 'classRoom.major'])
+            ->get()
+            ->filter(fn($assignment) => $assignment->teacher && $assignment->subject && $assignment->classRoom && $assignment->classRoom->major)
+            ->mapWithKeys(fn($assignment) => [
+                $assignment->id => $assignment->teacher->name
+                    .' - '.$assignment->subject->name
+                    .' - '.$assignment->classRoom->level.' '.$assignment->classRoom->turma
+                    .' / '.$assignment->classRoom->major->name,
+            ])
+            ->toArray();
+    })
+    ->searchable()
+    ->required(),
 
-                Forms\Components\Select::make('subject_assignment_id')
-                    ->label('Guru / Mata Pelajaran / Kelas')
-                    ->options(
-                        SubjectAssignment::with(['teacher', 'subject', 'classRoom', 'classRoom.major'])
-                            ->get()
-                            ->mapWithKeys(fn($item) => [
-                                $item->id => $item->teacher->name.' - '.$item->subject->name.' - '.$item->classRoom->level.' '.$item->classRoom->turma.' / '.$item->classRoom->major->name
-                            ])
-                    )
-                    ->required(),
 
                 Forms\Components\Select::make('academic_year_id')
                     ->label('Tahun Ajaran')

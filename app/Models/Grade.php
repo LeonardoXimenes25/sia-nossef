@@ -17,66 +17,51 @@ class Grade extends Model
         'score',
     ];
 
-    /**
-     * Relasi ke murid
-     */
+    // Relasi ke Murid
     public function student()
     {
         return $this->belongsTo(Student::class);
     }
 
-    /**
-     * Relasi ke SubjectAssignment
-     * (menghubungkan guru, mata pelajaran, kelas, dan jurusan)
-     */
+    // Relasi ke SubjectAssignment (Guru, Mata Pelajaran, Kelas, Jurusan)
     public function subjectAssignment()
     {
         return $this->belongsTo(SubjectAssignment::class);
     }
 
-    /**
-     * Relasi ke Tahun Ajaran (contoh: 2024/2025)
-     */
+    // Relasi ke Tahun Ajaran
     public function academicYear()
     {
         return $this->belongsTo(AcademicYear::class);
     }
 
-    /**
-     * Relasi ke Periode (contoh: Primeiru, Segundu, Terseru)
-     */
+    // Relasi ke Periode
     public function period()
     {
         return $this->belongsTo(Period::class);
     }
 
     /**
-     * Akses cepat ke guru (melalui subjectAssignment)
+     * Akses cepat ke Guru melalui SubjectAssignment
      */
     public function teacher()
     {
-        return $this->hasOneThrough(
-            Teacher::class,
-            SubjectAssignment::class,
-            'id',           // Foreign key di SubjectAssignment
-            'id',           // Foreign key di Teacher
-            'subject_assignment_id', // Local key di Grade
-            'teacher_id'    // Local key di SubjectAssignment
-        );
+        return $this->subjectAssignment?->teacher;
     }
 
     /**
-     * Akses cepat ke mata pelajaran (melalui subjectAssignment)
+     * Akses cepat ke Mata Pelajaran melalui SubjectAssignment
      */
     public function subject()
     {
-        return $this->hasOneThrough(
-            Subject::class,
-            SubjectAssignment::class,
-            'id',
-            'id',
-            'subject_assignment_id',
-            'subject_id'
-        );
+        return $this->subjectAssignment?->subject;
+    }
+
+    /**
+     * Akses cepat ke Kelas melalui SubjectAssignment
+     */
+    public function classRoom()
+    {
+        return $this->subjectAssignment?->classRoom;
     }
 }

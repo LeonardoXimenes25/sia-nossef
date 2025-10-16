@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TimetableResource\Pages;
-use App\Filament\Resources\TimetableResource\RelationManagers;
 use App\Models\Timetable;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,7 +10,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TimetableResource extends Resource
 {
@@ -24,15 +22,19 @@ class TimetableResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('subject_assignment_id')
-    ->label('Guru / Mata Pelajaran / Kelas')
-    ->options(\App\Models\SubjectAssignment::with(['teacher', 'subject', 'classRoom', 'classRoom.major'])->get()->mapWithKeys(function($item) {
-        return [$item->id => $item->teacher->name.' - '.$item->subject->name.' - '.$item->classRoom->level.' '.$item->classRoom->turma];
-    }))
-    ->searchable()
-    ->required(),
-
+                    ->label('Guru / Mata Pelajaran / Kelas')
+                    ->options(\App\Models\SubjectAssignment::with(['teacher', 'subject', 'classRoom', 'classRoom.major'])->get()->mapWithKeys(function($item) {
+                        return [
+                            $item->id => $item->teacher->name
+                                .' - '.$item->subject->name
+                                .' - '.$item->classRoom->level
+                                .' '.$item->classRoom->turma
+                        ];
+                    }))
+                    ->required(),
 
                 Forms\Components\Select::make('day')
+                    ->label('Hari')
                     ->options([
                         'Monday' => 'Senin',
                         'Tuesday' => 'Selasa',
@@ -45,7 +47,6 @@ class TimetableResource extends Resource
 
                 Forms\Components\TimePicker::make('start_time')->required(),
                 Forms\Components\TimePicker::make('end_time')->required(),
-
             ]);
     }
 
@@ -54,14 +55,13 @@ class TimetableResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('subjectAssignment.teacher.name')->label('Guru'),
-    Tables\Columns\TextColumn::make('subjectAssignment.subject.name')->label('Mata Pelajaran'),
-    Tables\Columns\TextColumn::make('subjectAssignment.classRoom.level')->label('Kelas'),
-    Tables\Columns\TextColumn::make('subjectAssignment.classRoom.turma')->label('Turma'),
-    Tables\Columns\TextColumn::make('subjectAssignment.classRoom.major.name')->label('Jurusan'),
-    Tables\Columns\TextColumn::make('day')->label('Hari'),
-    Tables\Columns\TextColumn::make('start_time')->label('Mulai'),
-    Tables\Columns\TextColumn::make('end_time')->label('Selesai'),
-
+                Tables\Columns\TextColumn::make('subjectAssignment.subject.name')->label('Mata Pelajaran'),
+                Tables\Columns\TextColumn::make('subjectAssignment.classRoom.level')->label('Kelas'),
+                Tables\Columns\TextColumn::make('subjectAssignment.classRoom.turma')->label('Turma'),
+                Tables\Columns\TextColumn::make('subjectAssignment.classRoom.major.name')->label('Jurusan'),
+                Tables\Columns\TextColumn::make('day')->label('Hari'),
+                Tables\Columns\TextColumn::make('start_time')->label('Mulai'),
+                Tables\Columns\TextColumn::make('end_time')->label('Selesai'),
             ])
             ->filters([
                 //
@@ -74,6 +74,16 @@ class TimetableResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    // Eager load relasi supaya kolom nested muncul
+    public static function getTableQuery(): Builder
+    {
+        return parent::getTableQuery()->with([
+            'subjectAssignment.teacher',
+            'subjectAssignment.subject',
+            'subjectAssignment.classRoom.major',
+        ]);
     }
 
     public static function getRelations(): array

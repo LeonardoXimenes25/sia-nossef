@@ -18,6 +18,7 @@ class PeriodResource extends Resource
     protected static ?string $model = Period::class;
 
     protected static ?string $navigationGroup = 'Managementu Akademiku';
+    protected static ?string $navigationLabel = 'Periodu';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

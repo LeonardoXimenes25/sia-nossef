@@ -1,17 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Controllers\ScheduleController;
 
 Route::get('/home', function () {
     return view('pages.home');
-});
+})->name('home');
 
-Route::get('/schedules', function () {
-    return view('pages.schedules');
-});
+Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedule');
 
 

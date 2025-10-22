@@ -32,11 +32,9 @@ class AttendanceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
-    protected static ?string $navigationLabel = 'Absensi';
-
     protected static ?string $modelLabel = 'Absensi';
-
-    protected static ?string $pluralModelLabel = 'Daftar Absensi';
+    protected static ?string $navigationLabel = 'Absensia';
+    protected static ?string $pluralModelLabel = 'Lista Absensia';
 
     public static function form(Form $form): Form
     {

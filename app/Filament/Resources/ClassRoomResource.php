@@ -26,12 +26,12 @@ class ClassRoomResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('level')
-                    ->label('Kelas')
+                    ->label('Klasse')
                     ->placeholder('10, 11, 12')
                     ->required(),
 
                 Forms\Components\Select::make('major_id')
-                    ->label('Jurusan')
+                    ->label('Area Estudu')
                     ->relationship('major', 'name')
                     ->required(),
 
@@ -46,11 +46,9 @@ class ClassRoomResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('level')->label('Kelas')->sortable(),
-                Tables\Columns\TextColumn::make('major.name')->label('Jurusan')->sortable(),
+                Tables\Columns\TextColumn::make('level')->label('Klasse')->sortable(),
+                Tables\Columns\TextColumn::make('major.name')->label('Area Estudu')->sortable(),
                 Tables\Columns\TextColumn::make('turma')->label('Turma')->sortable(),
-                Tables\Columns\TextColumn::make('created_at')->label('Dibuat')->dateTime(),
-
             ])
             ->filters([
                 //

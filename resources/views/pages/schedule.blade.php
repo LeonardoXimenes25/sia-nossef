@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
+<div class="container py-4 mt-5">
     <!-- Filter -->
     <div class="filter-section mb-4">
         <div class="card border shadow-sm">

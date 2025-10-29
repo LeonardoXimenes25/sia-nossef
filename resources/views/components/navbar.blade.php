@@ -8,9 +8,10 @@
 
         <nav id="navmenu" class="navmenu">
           <ul>
-            <li><a href="{{route('home')}}" class="active">Baranda</a></li>
+            <li><a href="{{route('home')}}" class="{{ Route::is('home') ? 'active' : '' }}">Baranda</a></li>
+            <li><a href="{{route('about')}}" class="{{ Route::is('about') ? 'active' : '' }}">Konaba Ami</a></li>
             <li><a href="{{route('schedule')}}">Horariu</a></li>
-            <li><a href="#services">Horariu Eskola</a></li>
+            <li><a href="{{route('teachers.index')}}">Lista Professores</a></li>
             <li><a href="#portfolio">Portfolio</a></li>
             <li><a href="#team">Team</a></li>
             <li><a href="#contact">Contact</a></li>

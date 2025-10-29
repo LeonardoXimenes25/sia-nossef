@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Grade;
 use App\Models\Major;
 use App\Models\ClassRoom;
+use App\Models\Attendance;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
@@ -71,4 +72,18 @@ class Student extends Model
             ? asset('storage/' . $this->photo) 
             : asset('assets/img/default-avatar.png');
     }
+    
+    // Relasi
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    // Ambil status absensi untuk tanggal tertentu
+    public function attendanceFor($date)
+    {
+        return $this->attendances()->where('date', $date)->first();
+    }
+
+
 }

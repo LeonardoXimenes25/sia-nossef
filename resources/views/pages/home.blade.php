@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'ESG. Nossef | Baranda')
+
 @section('content')
 <section id="hero" class="hero section mt-5">
   <div class="hero-content">
@@ -7,7 +9,7 @@
       <div class="row align-items-center">
         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
           <div class="content">
-            <h1>Transforming Ideas Into Strategic Business Solutions</h1>
+            <h1>Ensino Secundaria Geral Nossef</h1>
             <p>We partner with forward-thinking companies to accelerate growth, optimize operations, and unlock their full potential through innovative consulting approaches and data-driven insights.</p>
             <div class="cta-group">
               <a href="#about" class="btn-primary">Start Your Journey</a>

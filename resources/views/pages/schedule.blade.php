@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
+@section('title', 'ESG. Nossef | Horariu')
+
 @section('content')
-<div class="container py-4 mt-5">
+<div class="container py-4 mt-5" style="padding-top: 100px">
     <!-- Filter -->
     <div class="filter-section mb-4">
         <div class="card border shadow-sm">

@@ -2,6 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Period;
+use App\Models\Student;
+use App\Models\Teacher;
+use App\Models\ClassRoom;
+use App\Models\AcademicYear;
+use App\Models\SubjectAssignment;
 use Illuminate\Database\Eloquent\Model;
 
 class Attendance extends Model

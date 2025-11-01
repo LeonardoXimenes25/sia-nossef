@@ -3,17 +3,24 @@
 namespace App\Filament\Resources\SubjectAssignmentResource\Pages;
 
 use App\Filament\Resources\SubjectAssignmentResource;
-use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 class EditSubjectAssignment extends EditRecord
 {
     protected static string $resource = SubjectAssignmentResource::class;
 
-    protected function getHeaderActions(): array
+    protected function getRedirectUrl(): string
     {
-        return [
-            Actions\DeleteAction::make(),
-        ];
+        return $this->getResource()::getUrl('index');
+    }
+
+    /**
+     * Setelah data disimpan, update juga pivot classRooms
+     */
+    protected function afterSave(): void
+    {
+        if (isset($this->data['classRooms'])) {
+            $this->record->classRooms()->sync($this->data['classRooms']);
+        }
     }
 }

@@ -7,16 +7,14 @@
     <!-- Filter -->
     <div class="filter-section mb-4">
         <div class="card border shadow-sm">
-            <div class="card-header custom-nav-bg py-3">
+            <div class="card-header py-3" style="background-color: #0099ff;">
                 <h6 class="mb-0 text-white"><i class="fas fa-filter me-2"></i>Filter Orariu</h6>
             </div>
             <div class="card-body">
                 <div class="row g-3">
                     <!-- Kelas -->
-                    <div class="col-md-3">
-                        <label class="form-label fw-semibold custom-nav-color">
-                            <i class="fas fa-door-open me-2"></i>Hili Klase
-                        </label>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold text-primary"><i class="fas fa-door-open me-2"></i>Hili Klase</label>
                         <select class="form-select border" id="class-select">
                             <option value="all" selected>Klase Hotu</option>
                             @foreach($classes as $class)
@@ -25,11 +23,20 @@
                         </select>
                     </div>
 
+                    <!-- Turma -->
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold text-primary"><i class="fas fa-users me-2"></i>Hili Turma</label>
+                        <select class="form-select border" id="turma-select">
+                            <option value="all" selected>Turma Hotu</option>
+                            @foreach($turmas as $turma)
+                                <option value="{{ $turma }}">{{ $turma }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <!-- Jurusan -->
-                    <div class="col-md-3">
-                        <label class="form-label fw-semibold custom-nav-color">
-                            <i class="fas fa-graduation-cap me-2"></i>Hili Area Estudu
-                        </label>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold text-primary"><i class="fas fa-graduation-cap me-2"></i>Hili Area Estudu</label>
                         <select class="form-select border" id="major-select">
                             <option value="all" selected>Area Estudu Hotu</option>
                             @foreach($majors as $major)
@@ -40,9 +47,7 @@
 
                     <!-- Guru -->
                     <div class="col-md-3">
-                        <label class="form-label fw-semibold custom-nav-color">
-                            <i class="fas fa-chalkboard-teacher me-2"></i>Hili Professor
-                        </label>
+                        <label class="form-label fw-semibold text-primary"><i class="fas fa-chalkboard-teacher me-2"></i>Hili Professor</label>
                         <select class="form-select border" id="teacher-select">
                             <option value="all" selected>Professor Hotu</option>
                             @foreach($teachers as $teacher)
@@ -53,9 +58,7 @@
 
                     <!-- Hari -->
                     <div class="col-md-3">
-                        <label class="form-label fw-semibold custom-nav-color mb-2">
-                            <i class="fas fa-calendar-day me-2"></i>Hili Loron
-                        </label>
+                        <label class="form-label fw-semibold text-primary mb-2"><i class="fas fa-calendar-day me-2"></i>Hili Loron</label>
                         <div class="d-flex flex-wrap gap-1">
                             @php
                                 $days = [
@@ -69,7 +72,7 @@
                                 ];
                             @endphp
                             @foreach($days as $dayKey => $dayInfo)
-                                <button class="day-tab btn btn-outline-custom btn-sm rounded-pill px-3 {{ $dayKey === 'all' ? 'active' : '' }}" 
+                                <button class="day-tab btn btn-outline-primary btn-sm rounded-pill px-3 {{ $dayKey === 'all' ? 'active' : '' }}" 
                                         data-day="{{ $dayKey }}">
                                     <i class="{{ $dayInfo['icon'] }} me-1"></i>
                                     {{ $dayInfo['text'] }}
@@ -84,22 +87,22 @@
 
     <!-- Tabel Jadwal -->
     <div class="card border shadow-sm">
-        <div class="card-header custom-nav-bg py-3 d-flex justify-content-between align-items-center">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center" style="background-color: #0099ff;">
             <h6 class="mb-0 text-white"><i class="fas fa-table me-2"></i>Orariu Materia</h6>
-            <span class="badge bg-light custom-nav-color" id="schedule-count">{{ count($timetables) }} Horariu</span>
+            <span class="badge text-white" id="schedule-count" style="background-color: #0099ff;">{{ count($timetables) }} Horariu</span>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0" id="schedule-table">
-                    <thead class="table-dark">
+                    <thead class="text-white" style="background-color: #0099ff;">
                         <tr>
-                            <th><i class="fas fa-calendar me-1"></i>Loron</th>
-                            <th><i class="fas fa-clock me-1"></i>Oras</th>
-                            <th><i class="fas fa-book me-1"></i>Materia</th>
-                            <th><i class="fas fa-user me-1"></i>Professor</th>
-                            <th><i class="fas fa-door-open me-1"></i>Klase</th>
-                            <th><i class="fas fa-graduation-cap me-1"></i>Area Estudu</th>
-                            <th><i class="fas fa-users me-1"></i>Klase</th>
+                            <th>Loron</th>
+                            <th>Oras</th>
+                            <th>Materia</th>
+                            <th>Professor</th>
+                            <th>Klase</th>
+                            <th>Turma</th>
+                            <th>Area Estudu</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -113,19 +116,19 @@
                                 'Saturday' => 'Sabadu',
                             ];
                         @endphp
-                        @foreach($timetables as $item)
-                        <tr data-class="{{ $item->subjectAssignment->classRoom->level ?? '-' }}"
-                            data-teacher="{{ $item->subjectAssignment->teacher->name ?? '-' }}"
-                            data-major="{{ $item->subjectAssignment->classRoom->major->name ?? '-' }}"
-                            data-day="{{ $item->day }}"
-                            class="schedule-row">
-                            <td><span class="fw-semibold custom-nav-color">{{ $dayNames[$item->day] ?? $item->day }}</span></td>
-                            <td><span class="custom-hover-color fw-medium">{{ $item->start_time }}</span> - <span class="custom-hover-color fw-medium">{{ $item->end_time }}</span></td>
-                            <td class="fw-medium custom-nav-color">{{ $item->subjectAssignment->subject->name ?? '-' }}</td>
-                            <td class="custom-nav-color">{{ $item->subjectAssignment->teacher->name ?? '-' }}</td>
-                            <td class="text-muted">{{ $item->subjectAssignment->classRoom->turma ?? '-' }}</td>
-                            <td><span class="badge bg-secondary">{{ $item->subjectAssignment->classRoom->major->name ?? '-' }}</span></td>
-                            <td><span class="badge custom-nav-bg text-white">{{ $item->subjectAssignment->classRoom->level ?? '-' }}</span></td>
+                        @foreach($timetables as $tt)
+                        <tr data-class="{{ $tt->classRoom->level ?? '-' }}"
+                            data-turma="{{ $tt->classRoom->turma ?? '-' }}"
+                            data-major="{{ $tt->classRoom->major->name ?? '-' }}"
+                            data-teacher="{{ $tt->subjectAssignment->teacher->name }}"
+                            data-day="{{ $tt->day }}">
+                            <td>{{ $dayNames[$tt->day] ?? $tt->day }}</td>
+                            <td>{{ $tt->start_time }} - {{ $tt->end_time }}</td>
+                            <td>{{ $tt->subjectAssignment->subject->name ?? '-' }}</td>
+                            <td>{{ $tt->subjectAssignment->teacher->name ?? '-' }}</td>
+                            <td>{{ $tt->classRoom->level ?? '-' }}</td>
+                            <td>{{ $tt->classRoom->turma ?? '-' }}</td>
+                            <td>{{ $tt->classRoom->major->name ?? '-' }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -134,35 +137,20 @@
         </div>
     </div>
 
-    <!-- Empty State -->
     <div id="empty-state" class="text-center py-5" style="display: none;">
         <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
         <h5 class="text-muted mb-2">Tidak ada jadwal ditemukan</h5>
         <p class="text-muted mb-3">Coba ubah filter untuk melihat jadwal lainnya</p>
-        <button class="btn custom-nav-bg btn-sm text-white" onclick="resetFilters()">
+        <button class="btn text-white btn-sm" style="background-color: #0099ff;" onclick="resetFilters()">
             <i class="fas fa-refresh me-1"></i>Reset Filter
         </button>
     </div>
 </div>
 
-<style>
-    :root {
-        --nav-color: #222;
-        --nav-hover-color: #09947d;
-    }
-    .custom-nav-color { color: var(--nav-color)!important; }
-    .custom-hover-color { color: var(--nav-hover-color)!important; }
-    .custom-nav-bg { background-color: var(--nav-color)!important; }
-    .btn-outline-custom { color: var(--nav-color); border-color: var(--nav-color); }
-    .btn-outline-custom:hover, .btn-outline-custom.active {
-        background-color: var(--nav-color); color: #fff; border-color: var(--nav-color);
-    }
-    .table-dark { background-color: var(--nav-color)!important; color: white!important; }
-</style>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const classSelect = document.getElementById('class-select');
+    const turmaSelect = document.getElementById('turma-select');
     const teacherSelect = document.getElementById('teacher-select');
     const majorSelect = document.getElementById('major-select');
     const dayTabs = document.querySelectorAll('.day-tab');
@@ -171,35 +159,43 @@ document.addEventListener('DOMContentLoaded', function() {
     const emptyState = document.getElementById('empty-state');
     const scheduleTable = document.getElementById('schedule-table');
 
-    function updateDateTime() {
-        const now = new Date();
-        const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('current-date').textContent = now.toLocaleDateString('id-ID', opts);
-        document.getElementById('current-time').textContent = now.toLocaleTimeString('id-ID');
-    }
-    setInterval(updateDateTime, 1000); updateDateTime();
-
     function applyFilters() {
         const selectedClass = classSelect.value;
+        const selectedTurma = turmaSelect.value;
         const selectedTeacher = teacherSelect.value;
         const selectedMajor = majorSelect.value;
         const activeDay = document.querySelector('.day-tab.active').dataset.day;
         let visible = 0;
+
+        const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const sortedRows = [];
+
         rows.forEach(row => {
             const matches = 
                 (selectedClass === 'all' || row.dataset.class === selectedClass) &&
+                (selectedTurma === 'all' || row.dataset.turma === selectedTurma) &&
                 (selectedTeacher === 'all' || row.dataset.teacher === selectedTeacher) &&
                 (selectedMajor === 'all' || row.dataset.major === selectedMajor) &&
                 (activeDay === 'all' || row.dataset.day === activeDay);
+
             row.style.display = matches ? '' : 'none';
+            if (matches) sortedRows.push(row);
             if (matches) visible++;
         });
+
+        // Urutkan berdasarkan hari
+        sortedRows.sort((a, b) => dayOrder.indexOf(a.dataset.day) - dayOrder.indexOf(b.dataset.day));
+
+        // Masukkan kembali ke tbody
+        const tbody = scheduleTable.querySelector('tbody');
+        sortedRows.forEach(row => tbody.appendChild(row));
+
         scheduleCount.textContent = `${visible} Jadwal`;
         scheduleTable.style.display = visible ? 'table' : 'none';
         emptyState.style.display = visible ? 'none' : 'block';
     }
 
-    [classSelect, teacherSelect, majorSelect].forEach(el => el.addEventListener('change', applyFilters));
+    [classSelect, turmaSelect, teacherSelect, majorSelect].forEach(el => el.addEventListener('change', applyFilters));
     dayTabs.forEach(tab => tab.addEventListener('click', () => {
         dayTabs.forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
@@ -207,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }));
 
     window.resetFilters = () => {
-        classSelect.value = teacherSelect.value = majorSelect.value = 'all';
+        classSelect.value = turmaSelect.value = teacherSelect.value = majorSelect.value = 'all';
         dayTabs.forEach(t => t.classList.remove('active'));
         document.querySelector('.day-tab[data-day="all"]').classList.add('active');
         applyFilters();

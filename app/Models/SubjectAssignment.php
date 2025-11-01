@@ -17,7 +17,6 @@ class SubjectAssignment extends Model
         'subject_id',
         'academic_year_id',
         'period_id',
-        'class_room_id',
     ];
 
     public function teacher()
@@ -40,10 +39,12 @@ class SubjectAssignment extends Model
         return $this->belongsTo(Period::class);
     }
 
-    public function classRoom()
+    public function classRooms()
     {
-        return $this->belongsTo(ClassRoom::class);
+        return $this->belongsToMany(ClassRoom::class, 'subject_assignment_class_rooms')
+                    ->withTimestamps();
     }
+
 
     public function timetables()
     {

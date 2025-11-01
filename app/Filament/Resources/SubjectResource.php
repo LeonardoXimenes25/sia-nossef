@@ -2,48 +2,44 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Major;
+use App\Filament\Resources\SubjectResource\Pages;
 use App\Models\Subject;
-use App\Models\Teacher;
+use App\Models\Major;
+use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\SubjectResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\SubjectResource\RelationManagers;
 
 class SubjectResource extends Resource
 {
     protected static ?string $model = Subject::class;
 
-    protected static ?string $navigationLabel = 'Materia';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Materia Estudu';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
+    protected static ?string $navigationGroup = 'Managementu Akademiku';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('code')
-                    ->label('Kodigu'),
-
-                TextInput::make('name')
-                    ->label('Naran'),
-
-                Select::make('major_id')
-                    ->label('Area Estudu')
-                    ->options(Major::all()->pluck('name', 'id'))
-                    ->searchable(),
                 
-                Select::make('teacher_id')
-                    ->label('Professor')
-                    ->options(Teacher::all()->pluck('name', 'id'))
-                    ->searchable(),
+
+                // Nama Mata Pelajaran
+                TextInput::make('name')
+                    ->label('Naran Materia')
+                    ->required(),
+
+                // Pilih Jurusan (many-to-many)
+                Select::make('majors')
+                    ->label('Area Estudu')
+                    ->multiple()
+                    ->relationship('majors', 'name') // relasi pivot
+                    ->preload()
+                    ->required(),
             ]);
     }
 
@@ -51,36 +47,24 @@ class SubjectResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->label('Nu'),
-                TextColumn::make('code')->label('Kodigu'),
-                TextColumn::make('name')->label('Naran'),
-                TextColumn::make('major_id')
+                TextColumn::make('id')->label('Nu. '),
+                TextColumn::make('name')->label('Naran Materia'),
+                TextColumn::make('majors')
                     ->label('Area Estudu')
-                    ->getStateUsing(fn($record) => $record->major?->name),
-                TextColumn::make('teacher_id')
-                    ->label('Professor')
-                    ->getStateUsing(fn($record) => $record->teacher?->name),
-                
-                
+                    ->getStateUsing(fn($record) => $record->majors->pluck('name')->join(', ')),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

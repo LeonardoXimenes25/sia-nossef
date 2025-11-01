@@ -29,7 +29,8 @@ class MajorResource extends Resource
             ->schema([
                 TextInput::make('name')
                     ->label('Naran')
-                    ->placeholder('Prenxe ita nia naran'),
+                    ->placeholder('Prenxe ita nia naran')
+                    ->required(),
             ]);
     }
 

@@ -3,58 +3,65 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\SubjectAssignmentResource\Pages;
-use App\Filament\Resources\SubjectAssignmentResource\RelationManagers;
 use App\Models\SubjectAssignment;
+use App\Models\ClassRoom;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SubjectAssignmentResource extends Resource
 {
     protected static ?string $model = SubjectAssignment::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Penugasan Guru';
+    protected static ?string $navigationGroup = 'Managementu Akademiku';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                // Pilih Guru
                 Forms\Components\Select::make('teacher_id')
-                ->label('Professor')
-                ->relationship('teacher', 'name')
-                ->required(),
+                    ->relationship('teacher', 'name')
+                    ->label('Guru')
+                    ->required(),
 
-            Forms\Components\Select::make('subject_id')
-                ->label('Materia')
-                ->relationship('subject', 'name')
-                ->required(),
+                // Pilih Mata Pelajaran
+                Forms\Components\Select::make('subject_id')
+                    ->relationship('subject', 'name')
+                    ->label('Mata Pelajaran')
+                    ->required(),
 
-            Forms\Components\Select::make('class_room_id')
-                ->label('Kelas / Turma')
-                ->options(function () {
-                    return \App\Models\ClassRoom::with('major')
-                        ->get()
-                        ->mapWithKeys(fn($classRoom) => [
-                            $classRoom->id => $classRoom->level.' '.$classRoom->major->name.' '.$classRoom->turma
-                        ]);
-                })
-                ->searchable()
-                ->required(),
+                // Pilih Tahun Ajaran
+                Forms\Components\Select::make('academic_year_id')
+                    ->relationship('academicYear', 'name')
+                    ->label('Tahun Ajaran')
+                    ->required(),
 
+                // Pilih Periode
+                Forms\Components\Select::make('period_id')
+                    ->relationship('period', 'name')
+                    ->label('Periode')
+                    ->required(),
 
-            Forms\Components\Select::make('academic_year_id')
-                ->label('Tahun Ajaran')
-                ->relationship('academicYear', 'name')
-                ->required(),
-
-            Forms\Components\Select::make('period_id')
-                ->label('Periode')
-                ->relationship('period', 'name')
-                ->required(),
+                // Pilih Banyak Kelas (Many-to-Many)
+                Forms\Components\Select::make('classRooms')
+                    ->multiple()
+                    ->label('Kelas / Turma')
+                    ->options(function () {
+                        return ClassRoom::with('major')->get()->mapWithKeys(function ($classRoom) {
+                            return [
+                                $classRoom->id => 
+                                    $classRoom->level . ' ' . 
+                                    $classRoom->turma . ' (' . 
+                                    $classRoom->major->name . ')',
+                            ];
+                        });
+                    })
+                    ->required(),
             ]);
     }
 
@@ -62,26 +69,48 @@ class SubjectAssignmentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('teacher.name')->label('Guru')->sortable(),Tables\Columns\TextColumn::make('subject.name')->label('Mata Pelajaran'),Tables\Columns\TextColumn::make('classRoom.major.name')->label('Jurusan'),Tables\Columns\TextColumn::make('classRoom.level')->label('Kelas'),Tables\Columns\TextColumn::make('classRoom.turma')->label('Turma'),Tables\Columns\TextColumn::make('academicYear.name')->label('Tahun Ajaran'),Tables\Columns\TextColumn::make('period.name')->label('Periode'),
+                Tables\Columns\TextColumn::make('teacher.name')
+                    ->label('Guru')
+                    ->sortable()
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('subject.name')
+                    ->label('Mata Pelajaran')
+                    ->sortable()
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('academicYear.name')
+                    ->label('Tahun Ajaran')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('period.name')
+                    ->label('Periode')
+                    ->sortable(),
+
+                // Kolom Kelas / Turma (tampilkan level, turma, dan jurusan)
+                Tables\Columns\TextColumn::make('classRooms')
+                    ->label('Kelas / Turma')
+                    ->getStateUsing(fn($record) => 
+                        $record->classRooms->map(fn($cr) => 
+                            $cr->level . ' ' . $cr->turma . ' (' . $cr->major->name . ')'
+                        )->join(', ')
+                    )
+                    ->wrap() // agar teks panjang bisa turun ke baris baru
+                    ->limit(60),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->label('Edita'),
+                Tables\Actions\DeleteAction::make()->label('Apaga'),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

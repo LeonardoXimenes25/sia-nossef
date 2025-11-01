@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('timetables', function (Blueprint $table) {
             $table->id();
             $table->foreignId('subject_assignment_id')->constrained()->onDelete('cascade');
+            $table->foreignId('class_room_id')->constrained('class_rooms')->onDelete('cascade');
             $table->string('day'); // contoh: Monday, Tuesday, dsb
             $table->time('start_time');
             $table->time('end_time');

@@ -24,6 +24,13 @@ class ClassRoom extends Model
 
     public function subjectAssignments()
     {
-        return $this->hasMany(SubjectAssignment::class);
+        return $this->belongsToMany(SubjectAssignment::class, 'subject_assignment_class_rooms')
+                    ->withTimestamps();
     }
+
+    public function getNameAttribute()
+    {
+        return $this->level . ' ' . $this->turma . ' (' . $this->major->name . ')';
+    }
+
 }

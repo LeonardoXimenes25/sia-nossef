@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subject_assignments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade');
+        Schema::create('subject_majors', function (Blueprint $table) {
             $table->foreignId('subject_id')->constrained()->onDelete('cascade');
-            $table->foreignId('academic_year_id')->constrained()->onDelete('cascade');
-            $table->foreignId('period_id')->constrained()->onDelete('cascade');
+            $table->foreignId('major_id')->constrained()->onDelete('cascade');
+            $table->primary(['subject_id', 'major_id']); // memastikan kombinasi unik
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subject_assignments');
+        Schema::dropIfExists('subject_majors');
     }
 };

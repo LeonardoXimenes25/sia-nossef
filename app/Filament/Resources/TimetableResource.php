@@ -19,7 +19,7 @@ class TimetableResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
     protected static ?string $navigationLabel = 'Horariu';
-    protected static ?string $navigationGroup = 'Manajemen Akademik';
+    protected static ?string $navigationGroup = 'Managementu Akademiku';
 
     public static function form(Form $form): Form
     {

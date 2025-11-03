@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\TeacherResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\TeacherResource\RelationManagers;
+use AlperenErsoy\FilamentExport\Actions\FilamentExportHeaderAction;
 
 class TeacherResource extends Resource
 {
@@ -43,8 +44,8 @@ class TeacherResource extends Resource
                 Select::make('gender')
                     ->label('Sexu')
                     ->options([
-                        'm' => 'Male',
-                        'f' => 'Female',
+                        'm' => 'Mane',
+                        'f' => 'Feto',
                     ])
                     ->required(),
 
@@ -98,7 +99,7 @@ class TeacherResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->label('ID')->sortable(),
+                TextColumn::make('id')->label('Nu')->sortable(),
                 TextColumn::make('teacher_id')->label('ID Professor')->sortable(),
                 TextColumn::make('name')->label('Naran Professor')->sortable(),
                 TextColumn::make('gender')->label('Sexu'),
@@ -106,21 +107,21 @@ class TeacherResource extends Resource
                 TextColumn::make('birth_date')->label('Data Moris')->date(),
                 TextColumn::make('educational_qualification')->label('Abilitasaun Literaria'),
                 BadgeColumn::make('Estatuta')
-    ->label('Status')
-    ->sortable()
-    ->getStateUsing(function ($record) {
-        return match ($record->employment_status) {
-            'fp' => 'Permanent',
-            'ft' => 'Full-Time',
-            'pt' => 'Part-Time',
-            default => '-',
-        };
-    })
-    ->colors([
-        'success' => 'fp',   // hijau
-        'primary' => 'ft',   // biru
-        'warning' => 'pt',   // kuning
-    ]),
+                        ->label('Estatuta')
+                        ->sortable()
+                        ->getStateUsing(function ($record) {
+                            return match ($record->employment_status) {
+                                'fp' => 'Permanente',
+                                'ft' => 'Full-Time',
+                                'pt' => 'Part-Time',
+                                default => '-',
+                            };
+                        })
+                        ->colors([
+                            'success' => 'fp',   // hijau
+                            'primary' => 'ft',   // biru
+                            'warning' => 'pt',   // kuning
+                        ]),
                 TextColumn::make('employment_start_date')->label('Start Date')->date(),
                 TextColumn::make('phone')->label('Phone'),
                 TextColumn::make('email')->label('Email'),
@@ -129,11 +130,17 @@ class TeacherResource extends Resource
                 SelectFilter::make('employment_status')
                 ->label('Status')
                 ->options([
-                    'fp' => 'Permanent',
+                    'fp' => 'Permanente',
                     'ft' => 'Full-Time',
                     'pt' => 'Part-Time',
                 ]),
             ])
+            ->headerActions([
+                FilamentExportHeaderAction::make('export')
+                    ->fileName('Teacher')
+                    ->defaultFormat('pdf')
+                    ->color('success')
+                    ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

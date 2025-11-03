@@ -1,4 +1,4 @@
-<header id="header" class="header fixed-top shadow-sm">
+<header id="header" class="header fixed-top shadow-md">
     <div class="branding d-flex align-items-center">
         <div class="container position-relative d-flex align-items-center justify-content-between">
 
@@ -14,15 +14,13 @@
                     <li><a href="{{ route('about') }}" class="{{ Route::is('about') ? 'active' : '' }}">Konaba Ami</a></li>
                     <li><a href="{{ route('schedule') }}">Horariu</a></li>
                     <li><a href="{{ route('teachers.index') }}">Lista Professores</a></li>
-                    <li><a href="#portfolio">Portfolio</a></li>
-                    <li><a href="#team">Team</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
 
             <!-- Login di kanan -->
             <a href="/admin/login" class="btn text-white" style="background-color: #0099ff; border-color: #0099ff;">
-              Login
+                Login
             </a>
 
 

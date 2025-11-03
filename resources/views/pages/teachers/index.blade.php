@@ -2,19 +2,18 @@
 
 @section('content')
 <!-- Team Section -->
-<section id="team" class="team section mt-6">
+<section id="team" class="team section mt-4">
 
-    <div class="container section-title" data-aos="fade-up">
+    <div class="container section-title mt-4" data-aos="fade-up">
         <h2>Lista Professores</h2>
         <p>Our Hardworking Team</p>
     </div>
 
     <div class="container" data-aos="fade-up" data-aos-delay="100">
         <div class="row gy-4">
-
             @foreach ($teachers as $teacher)
             <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
-                <div class="member-card">
+                <div class="member-card shadow-lg">
                     <div class="member-image-wrapper">
                         <a href="{{ route('teachers.show', $teacher->id) }}">
                             <img src="{{ asset('storage/' . $teacher->photo) }}" 

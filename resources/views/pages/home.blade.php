@@ -43,7 +43,7 @@
 </section>
 
 <div class="container mt-4">
-  <h2 class="text-center mb-3">Peta Timor-Leste</h2>
+  <h2 class="text-center mb-3">Mapa Timor-Leste</h2>
   <div id="map" style="height: 500px; border-radius: 10px;"></div>
 </div>
 

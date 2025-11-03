@@ -77,56 +77,6 @@ class AttendanceResource extends Resource
             ]);
     }
 
-    // Simpan absensi semua siswa
-    public function save(): void
-    {
-        $state = $this->form->getState();
-
-        $classRoomId = $state['class_room_id'] ?? null;
-        $date = $state['date'] ?? null;
-        $students = $state['students'] ?? [];
-
-        if (!$classRoomId || !$date) {
-            $this->notify('danger', 'Pilih kelas dan tanggal terlebih dahulu.');
-            return;
-        }
-
-        if (empty($students)) {
-            $this->notify('danger', 'Tidak ada siswa untuk disimpan.');
-            return;
-        }
-
-        foreach ($students as $studentRow) {
-            // Pastikan id siswa ada
-            if (!isset($studentRow['id'])) continue;
-
-            Attendance::updateOrCreate(
-                [
-                    'student_id' => $studentRow['id'],
-                    'date' => $date,
-                ],
-                [
-                    'class_room_id' => $classRoomId,
-                    'status' => $studentRow['status'] ?? 'presente',
-                ]
-            );
-        }
-
-        $this->notify('success', 'Absensi berhasil disimpan.');
-    }
-
-    // Tombol simpan
-    protected function getFormActions(): array
-    {
-        return [
-            Forms\Actions\Action::make('save')
-                ->label('Simpan Absensi')
-                ->button()
-                ->color('success')
-                ->action('save'),
-        ];
-    }
-
     // Tabel absensi
     public static function table(Table $table): Table
     {

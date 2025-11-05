@@ -5,7 +5,7 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ScheduleController;
 
 Route::get('/', function () {
-    return view('pages.home');
+    return view('pages.home.hero');
 })->name('home');
 
 Route::get('/konaba-ami', function () {
@@ -14,9 +14,6 @@ Route::get('/konaba-ami', function () {
 
 Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedule');
 
-// teachears
-// Daftar semua guru
 Route::get('/teachers', [TeacherController::class, 'index'])->name('teachers.index');
 
-// Detail guru per ID
 Route::get('/teachers/{id}', [TeacherController::class, 'show'])->name('teachers.show');

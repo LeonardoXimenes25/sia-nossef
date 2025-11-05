@@ -13,7 +13,15 @@
                     <li><a href="{{ route('home') }}" class="{{ Route::is('home') ? 'active' : '' }}">Baranda</a></li>
                     <li><a href="{{ route('about') }}" class="{{ Route::is('about') ? 'active' : '' }}">Konaba Ami</a></li>
                     <li><a href="{{ route('schedule') }}">Horariu</a></li>
-                    <li><a href="{{ route('teachers.index') }}">Lista Professores</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Dadus Eskola
+                        </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Lista Alunos</a></li>
+                        <li><a class="dropdown-item" href="{{ route('teachers.index') }}">Lista Professores</a></li>
+                    </ul>
+                    </li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>

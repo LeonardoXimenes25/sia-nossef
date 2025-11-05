@@ -139,8 +139,8 @@
 
     <div id="empty-state" class="text-center py-5" style="display: none;">
         <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
-        <h5 class="text-muted mb-2">Tidak ada jadwal ditemukan</h5>
-        <p class="text-muted mb-3">Coba ubah filter untuk melihat jadwal lainnya</p>
+        <h5 class="text-muted mb-2">orariu la eziste</h5>
+        <p class="text-muted mb-3">Koko muda filter atu haree orariu seluk</p>
         <button class="btn text-white btn-sm" style="background-color: #0099ff;" onclick="resetFilters()">
             <i class="fas fa-refresh me-1"></i>Reset Filter
         </button>
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const tbody = scheduleTable.querySelector('tbody');
         sortedRows.forEach(row => tbody.appendChild(row));
 
-        scheduleCount.textContent = `${visible} Jadwal`;
+        scheduleCount.textContent = `${visible} Orariu`;
         scheduleTable.style.display = visible ? 'table' : 'none';
         emptyState.style.display = visible ? 'none' : 'block';
     }

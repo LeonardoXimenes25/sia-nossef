@@ -9,12 +9,22 @@ class Grade extends Model
 {
     use HasFactory;
 
+    // Kolom yang bisa diisi massal
     protected $fillable = [
         'student_id',
+        'class_room_id',
+        'teacher_id',
         'subject_assignment_id',
         'academic_year_id',
         'period_id',
         'score',
+        'remarks',
+    ];
+
+    protected $casts = [
+        'score' => 'decimal:1', // untuk handle nilai decimal seperti 8.5
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     // Relasi ke Murid
@@ -23,7 +33,19 @@ class Grade extends Model
         return $this->belongsTo(Student::class);
     }
 
-    // Relasi ke SubjectAssignment (Guru, Mata Pelajaran, Kelas, Jurusan)
+    // Relasi ke Kelas
+    public function classRoom()
+    {
+        return $this->belongsTo(ClassRoom::class);
+    }
+
+    // Relasi ke Guru
+    public function teacher()
+    {
+        return $this->belongsTo(Teacher::class);
+    }
+
+    // Relasi ke SubjectAssignment (Guru + Mata Pelajaran + Kelas)
     public function subjectAssignment()
     {
         return $this->belongsTo(SubjectAssignment::class);
@@ -42,26 +64,10 @@ class Grade extends Model
     }
 
     /**
-     * Akses cepat ke Guru melalui SubjectAssignment
-     */
-    public function teacher()
-    {
-        return $this->subjectAssignment?->teacher;
-    }
-
-    /**
      * Akses cepat ke Mata Pelajaran melalui SubjectAssignment
      */
     public function subject()
     {
         return $this->subjectAssignment?->subject;
-    }
-
-    /**
-     * Akses cepat ke Kelas melalui SubjectAssignment
-     */
-    public function classRoom()
-    {
-        return $this->subjectAssignment?->classRoom;
     }
 }

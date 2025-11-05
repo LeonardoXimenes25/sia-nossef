@@ -10,13 +10,9 @@
         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
           <div class="content">
             <h1>Ensino Secundaria Geral Nossef</h1>
-            <p>We partner with forward-thinking companies to accelerate growth, optimize operations, and unlock their full potential through innovative consulting approaches and data-driven insights.</p>
+            <p>Paz em Cristo</p>
             <div class="cta-group">
-              <a href="#about" class="btn-primary">Start Your Journey</a>
-              <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="btn-secondary glightbox">
-                <i class="bi bi-play-circle"></i>
-                <span>Watch Our Story</span>
-              </a>
+              <a href="/admin/login" class="btn-primary">Get Started</a>
             </div>
           </div>
         </div>
@@ -91,4 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
       .catch(err => console.error("Gagal load GeoJSON:", err));
 });
 </script>
+
+<!-- Statistik Sekolah -->
+@include('pages.home.stats')
 @endsection

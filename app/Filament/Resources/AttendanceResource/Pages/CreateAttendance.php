@@ -17,11 +17,24 @@ class CreateAttendance extends CreateRecord
         $date = $data['date'];
         $students = $data['students'] ?? [];
 
+        \Log::info('Creating attendance:', [
+            'class_room_id' => $classRoomId,
+            'date' => $date,
+            'students_count' => count($students),
+            'students_data' => $students
+        ]);
+
+        // Jika students kosong, ambil dari database dengan NRE
         if (empty($students)) {
             $students = Student::where('class_room_id', $classRoomId)
                 ->orderBy('name')
-                ->get(['id', 'name'])
-                ->map(fn($s) => ['id' => $s->id, 'status' => 'presente'])
+                ->get(['id', 'name', 'nre']) // TAMBAH nre di sini
+                ->map(fn($s) => [
+                    'id' => $s->id, 
+                    'name' => $s->name,
+                    'nre' => $s->nre, // TAMBAH nre di sini
+                    'status' => 'presente'
+                ])
                 ->toArray();
         }
 
@@ -29,27 +42,30 @@ class CreateAttendance extends CreateRecord
             if (!isset($studentRow['id'])) continue;
 
             Attendance::updateOrCreate(
-            [
-                'student_id' => $studentRow['id'],
-                'class_room_id' => $classRoomId,
-                'date' => $date,
-            ],
-            [
-                'status' => $studentRow['status'] ?? 'presente',
-            ]
-        );
+                [
+                    'student_id' => $studentRow['id'],
+                    'class_room_id' => $classRoomId,
+                    'date' => $date,
+                ],
+                [
+                    'status' => $studentRow['status'] ?? 'presente',
+                ]
+            );
         }
-            return new Attendance(); // tetap return supaya Filament tidak error
+
+        // Return first record untuk memenuhi return type
+        return Attendance::where('class_room_id', $classRoomId)
+            ->where('date', $date)
+            ->first() ?? new Attendance();
     }
 
     protected function getCreatedNotificationTitle(): ?string
     {
-        return 'Absensia Susesu';
+        return 'Absensi Berhasil';
     }
 
     protected function getRedirectUrl(): string
     {
-        // Setelah simpan, kembali ke halaman daftar absensi
         return $this->getResource()::getUrl('index');
     }
 }

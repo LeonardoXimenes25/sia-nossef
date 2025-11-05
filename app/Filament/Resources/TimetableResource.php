@@ -79,7 +79,9 @@ class TimetableResource extends Resource
                 Tables\Columns\TextColumn::make('start_time')->label('Oras Hahu'),
                 Tables\Columns\TextColumn::make('end_time')->label('Oras Ramata'),
             ])
-            ->filters([])
+            ->filters([
+                
+            ])
             ->headerActions([
                 FilamentExportHeaderAction::make('export')
                     ->fileName('Timetables')

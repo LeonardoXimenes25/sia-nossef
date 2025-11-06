@@ -15,5 +15,3 @@ Route::get('/konaba-ami', function () {
 Route::get('/schedules', [ScheduleController::class, 'index'])->name('schedule');
 
 Route::get('/teachers', [TeacherController::class, 'index'])->name('teachers.index');
-
-Route::get('/teachers/{id}', [TeacherController::class, 'show'])->name('teachers.show');

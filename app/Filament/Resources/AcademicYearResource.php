@@ -19,25 +19,25 @@ class AcademicYearResource extends Resource
 
     protected static ?string $navigationGroup = 'Managementu Akademiku';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Tinan Akademiku';
+    protected static ?string $navigationLabel = 'Ano Letivo';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                ->label('Nama Tahun Ajaran')
-                ->placeholder('Contoh: 2024/2025')
+                ->label('Tinan Letivu')
+                ->placeholder('Ezemplu: 2024/2025')
                 ->required(),
 
                 Forms\Components\DatePicker::make('start_date')
-                    ->label('Tanggal Mulai'),
+                    ->label('Data Hahu'),
 
                 Forms\Components\DatePicker::make('end_date')
-                    ->label('Tanggal Selesai'),
+                    ->label('Data Remata'),
 
                 Forms\Components\Toggle::make('is_active')
-                    ->label('Aktif')
+                    ->label('Aktivu')
                     ->default(false),
             ]);
     }
@@ -46,10 +46,10 @@ class AcademicYearResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('Tahun Ajaran')->sortable(),
-                Tables\Columns\TextColumn::make('start_date')->date(),
-                Tables\Columns\TextColumn::make('end_date')->date(),
-                Tables\Columns\IconColumn::make('is_active')->boolean()->label('Aktif'),
+                Tables\Columns\TextColumn::make('name')->label('Tinan Letivu')->sortable(),
+                Tables\Columns\TextColumn::make('start_date')->label('Data Hahu')->date(),
+                Tables\Columns\TextColumn::make('end_date')->label('Data Remaata')->date(),
+                Tables\Columns\IconColumn::make('is_active')->boolean()->label('Aktivu'),
             ])
             ->filters([
                 //

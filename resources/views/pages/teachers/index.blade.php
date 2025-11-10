@@ -518,8 +518,6 @@ function setModalData(teacher) {
 
     // Definisikan info items untuk kolom 2 (Informasi Profesional)
     const column2Items = [
-        { icon: 'bi-briefcase', label: 'Estatututa', value: teacher.employment_status || 'Tidak ditentukan' },
-        { icon: 'bi-clock-history', label: 'Hahu Servisu', value: formatDate(teacher.employment_start_date) },
         { 
             icon: 'bi-envelope', 
             label: 'Email', 

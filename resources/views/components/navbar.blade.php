@@ -1,4 +1,4 @@
-<header id="header" class="header fixed-top shadow-md">
+<header id="header" class="header fixed-top shadow-lg">
     <div class="branding d-flex align-items-center">
         <div class="container position-relative d-flex align-items-center justify-content-between">
 
@@ -18,11 +18,11 @@
                             Dadus Eskola
                         </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Lista Alunos</a></li>
+                        <li><a class="dropdown-item" href="{{route('students.index')}}">Lista Alunos</a></li>
                         <li><a class="dropdown-item" href="{{ route('teachers.index') }}">Lista Professores</a></li>
                     </ul>
                     </li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="{{route('news.index')}}">Portal Informasaun</a></li>
                 </ul>
             </nav>
 

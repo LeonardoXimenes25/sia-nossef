@@ -39,7 +39,7 @@
 </section>
 
 <div class="container mt-4">
-  <h2 class="text-center mb-3">Mapa Timor-Leste</h2>
+  <h2 class="text-center mb-3">Mapa Lokalizasaun ESG. NOSSEF, Timor-Leste</h2>
   <div id="map" style="height: 500px; border-radius: 10px;"></div>
 </div>
 
@@ -59,6 +59,51 @@ document.addEventListener('DOMContentLoaded', function () {
         maxZoom: 18,
         attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
     }).addTo(map);
+
+    L.marker([-8.6720327, 125.4156324]).addTo(map)
+  .bindPopup(`
+    <b>ESG. NOSSEF</b><br>
+    Dili, Timor-Leste<br>
+    <a href="https://maps.google.com?q=-8.6720327,125.7275" target="_blank">Haree iha Google Maps</a>
+  `);
+
+      // Titik awal dan akhir (contoh rute kendaraan dari Dili ke sekolah)
+    const routePoints = [
+        [-8.5594, 125.5736],    // Pusat kota Dili
+        [-8.6000, 125.5200],    // Melewati tengah jalan
+        [-8.6500, 125.4600],    // Mendekati daerah Hera
+        [-8.6720327, 125.4156324] // Lokasi ESG. NOSSEF
+    ];
+
+    // Gambar rute kendaraan
+    const routeLine = L.polyline(routePoints, {
+        color: "blue",        // warna garis rute
+        weight: 4,            // ketebalan garis
+        opacity: 0.8,         // transparansi
+        smoothFactor: 1
+    }).addTo(map);
+
+    // Zoom otomatis agar rute terlihat utuh
+    map.fitBounds(routeLine.getBounds());
+
+    let carIcon = L.icon({
+  iconUrl: 'https://cdn-icons-png.flaticon.com/512/744/744465.png',
+  iconSize: [32, 32]
+});
+
+let carMarker = L.marker(routePoints[0], { icon: carIcon }).addTo(map);
+
+// Animasi sederhana
+let i = 0;
+function moveCar() {
+    if (i < routePoints.length) {
+        carMarker.setLatLng(routePoints[i]);
+        i++;
+        setTimeout(moveCar, 1000);
+    }
+}
+moveCar();
+
 
     // Load GeoJSON
     fetch("{{ asset('geo/timorleste.json') }}")

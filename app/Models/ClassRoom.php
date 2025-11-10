@@ -9,7 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClassRoom extends Model
 {
-    protected $fillable = ['level', 'major_id', 'turma'];
+    protected $fillable = [
+        'level', 
+        'major_id', 
+        'turma'
+    ];
+    
     public $timestamps = false;
 
     public function major()

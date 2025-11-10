@@ -3,7 +3,7 @@
 @section('title', 'ESG. Nossef | Horariu')
 
 @section('content')
-<div class="container py-4 mt-5" style="padding-top: 100px">
+<div class="container mt-5" style="padding-top: 70px">
     <!-- Filter -->
     <div class="filter-section mb-4">
         <div class="card border shadow-sm">
@@ -88,8 +88,17 @@
     <!-- Tabel Jadwal -->
     <div class="card border shadow-sm">
         <div class="card-header py-3 d-flex justify-content-between align-items-center" style="background-color: #0099ff;">
-            <h6 class="mb-0 text-white"><i class="fas fa-table me-2"></i>Orariu Materia</h6>
-            <span class="badge text-white" id="schedule-count" style="background-color: #0099ff;">{{ count($timetables) }} Horariu</span>
+            <h6 class="mb-0 text-white d-flex align-items-center">
+                <i class="fas fa-table me-2"></i>Orariu Materia
+            </h6>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge text-white" id="schedule-count" style="background-color: #006fd6;">
+                    {{ count($timetables) }} Horariu
+                </span>
+                <button id="download-btn" class="btn btn-light btn-sm shadow-sm">
+                    <i class="fas fa-download me-1"></i>Download Orariu
+                </button>
+            </div>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -117,18 +126,18 @@
                             ];
                         @endphp
                         @foreach($timetables as $tt)
-                        <tr data-class="{{ $tt->classRoom->level ?? '-' }}"
-                            data-turma="{{ $tt->classRoom->turma ?? '-' }}"
-                            data-major="{{ $tt->classRoom->major->name ?? '-' }}"
-                            data-teacher="{{ $tt->subjectAssignment->teacher->name }}"
+                        <tr data-class="{{ optional($tt->classRoom)->level ?? '-' }}"
+                            data-turma="{{ optional($tt->classRoom)->turma ?? '-' }}"
+                            data-major="{{ optional(optional($tt->classRoom)->major)->name ?? '-' }}"
+                            data-teacher="{{ optional(optional($tt->subjectAssignment)->teacher)->name ?? '-' }}"
                             data-day="{{ $tt->day }}">
                             <td>{{ $dayNames[$tt->day] ?? $tt->day }}</td>
                             <td>{{ $tt->start_time }} - {{ $tt->end_time }}</td>
-                            <td>{{ $tt->subjectAssignment->subject->name ?? '-' }}</td>
-                            <td>{{ $tt->subjectAssignment->teacher->name ?? '-' }}</td>
-                            <td>{{ $tt->classRoom->level ?? '-' }}</td>
-                            <td>{{ $tt->classRoom->turma ?? '-' }}</td>
-                            <td>{{ $tt->classRoom->major->name ?? '-' }}</td>
+                            <td>{{ optional(optional($tt->subjectAssignment)->subject)->name ?? '-' }}</td>
+                            <td>{{ optional(optional($tt->subjectAssignment)->teacher)->name ?? '-' }}</td>
+                            <td>{{ optional($tt->classRoom)->level ?? '-' }}</td>
+                            <td>{{ optional($tt->classRoom)->turma ?? '-' }}</td>
+                            <td>{{ optional(optional($tt->classRoom)->major)->name ?? '-' }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -139,7 +148,7 @@
 
     <div id="empty-state" class="text-center py-5" style="display: none;">
         <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
-        <h5 class="text-muted mb-2">orariu la eziste</h5>
+        <h5 class="text-muted mb-2">Orariu la eziste</h5>
         <p class="text-muted mb-3">Koko muda filter atu haree orariu seluk</p>
         <button class="btn text-white btn-sm" style="background-color: #0099ff;" onclick="resetFilters()">
             <i class="fas fa-refresh me-1"></i>Reset Filter
@@ -183,11 +192,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (matches) visible++;
         });
 
-        // Urutkan berdasarkan hari
         sortedRows.sort((a, b) => dayOrder.indexOf(a.dataset.day) - dayOrder.indexOf(b.dataset.day));
-
-        // Masukkan kembali ke tbody
         const tbody = scheduleTable.querySelector('tbody');
+        tbody.innerHTML = ''; 
         sortedRows.forEach(row => tbody.appendChild(row));
 
         scheduleCount.textContent = `${visible} Orariu`;
@@ -210,6 +217,21 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     applyFilters();
+
+    document.getElementById('download-btn').addEventListener('click', function() {
+    const query = new URLSearchParams({
+        class: classSelect.value,
+        turma: turmaSelect.value,
+        teacher: teacherSelect.value,
+        major: majorSelect.value,
+        day: document.querySelector('.day-tab.active').dataset.day
+    }).toString();
+
+    // Arahkan ke route /horariu/download dengan query params
+    window.location.href = `/horariu/download?${query}`;
+});
+
+
 });
 </script>
 @endsection
